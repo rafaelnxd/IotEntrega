@@ -1,125 +1,94 @@
 Previsão de Ondas de Calor em São Paulo
 =======================================
 
-Este repositório contém a implementação de um **protótipo de detecção e previsão de ondas de calor** na cidade de São Paulo, usando dados meteorológicos do INMET e shapefile de distritos.
+Este repositório implementa um **protótipo de detecção e previsão de ondas de calor** na cidade de São Paulo, utilizando dados meteorológicos do INMET e shapefile dos distritos da cidade.
+
+🎥 Vídeo Demonstrativo
+----------------------
+
+[Assista ao vídeo no YouTube](https://www.youtube.com/watch?v=uOzpU0tkYqs)
 
 * * * * *
-
-Vídeo:
-https://www.youtube.com/watch?v=uOzpU0tkYqs
-
-
 
 ⚙️ Pré-requisitos
 -----------------
 
--   Python 3.8+
+-   **Python** 3.8 ou superior
 
--   Biblioteca e dependências:
+-   **Dependências**:
 
     ```
-    pip install pandas numpy scikit-learn geopandas folium streamlit streamlit-folium joblib
+    pip install -r requirements.txt
     ```
 
--   Dados:
-
-    -   `data/raw/SIRGAS_SHP_distrito.shp` e arquivos auxiliares
-
-    -   `data/processed/historico_interpolado.csv` (gerado pelo `preprocess_data.py`)
+-   Arquivos de dados originais (CSV do INMET e shapefile dos distritos) na pasta `data/raw/`.
 
 * * * * *
 
-🛠️ Preparação dos Dados
-------------------------
-
-1.  **Download** dos dados meteorológicos do INMET (2022--2024) em formato CSV bruto.
-
-2.  Executar `scripts/preprocess_data.py` para:
-
-    -   Ler os CSVs horárias
-
-    -   Concatenar, ordenar e definir índice `datetime`
-
-    -   Interpolar valores faltantes de temperatura e umidade
-
-    -   Salvar `historico_interpolado.csv` em `data/processed`
-
-Exemplo:
+📂 Estrutura do Repositório
+---------------------------
 
 ```
-python scripts/preprocess_data.py --input-dir data/raw_inmet --output data/processed/historico_interpolado.csv
+├── assets/
+├── data/
+│   ├── raw/                     # Dados brutos CSV e shapefile
+│   ├── processed/               # Dados processados (gerados pelo notebook)
+│   └── tests/
+├── models/                      # Modelos treinados (gerados pelo notebook)
+├── notebooks/
+│   └── simulando_dados.ipynb    # Notebook para processamento e treinamento
+├── streamlit_app/
+│   └── Home.py                  # Aplicação web
+├── requirements.txt
+└── README.md
 ```
 
 * * * * *
 
-📈 Treinamento dos Modelos
---------------------------
+🛠️ Processamento e Treinamento de Modelos
+------------------------------------------
 
-No diretório `scripts/`, execute:
+Todo o fluxo de **pré-processamento**, **geração de dados simulados** e **treinamento dos modelos** está concentrado no notebook:
 
 ```
-python train_models.py\
-  --input data/processed/historico_interpolado.csv\
-  --outdir models/\
-  --horizon 7
+jupyter notebook notebooks/simulando_dados.ipynb
 ```
 
-Isso irá gerar:
+Dentro dele você encontrará células para:
 
--   `daily_temp_regressor.pkl`: modelo de regressão para previsão de temperatura máxima diária.
+1.  Ler e combinar os arquivos CSV do INMET (raw).
 
--   `heat_wave_classifier_7d.pkl`: classificador que prevê ocorrência de onda de calor num horizonte de 7 dias.
+2.  Realizar interpolação e limpeza dos dados meteorológicos.
+
+3.  Gerar datasets de treino e teste (incluindo simulações realistas).
+
+4.  Treinar os modelos de regressão e classificação (RandomForest).
+
+5.  Salvar os artefatos em `data/processed/` e em `models/`.
 
 * * * * *
 
 🚀 Executando a Aplicação Streamlit
 -----------------------------------
 
-No diretório `streamlit_app`:
+1.  Acesse a pasta da aplicação:
 
-```
-streamlit run Home.py
-```
+    ```
+    cd streamlit_app
+    ```
 
--   Interface na barra lateral para selecionar **data inicial** e **data final**.
+2.  Execute o Streamlit:
 
--   Tabelas com previsão diária de temperatura e lista de dias com onda de calor.
+    ```
+    streamlit run Home.py
+    ```
 
--   Mapa interativo com distritos de SP coloridos:
+3.  Na interface, selecione **data inicial** e **data final** para visualizar:
 
-    -   **Azul**: sem onda de calor.
+    -   Tabela com previsão diária de temperatura.
 
-    -   **Vermelho**: há onda de calor no período.
+    -   Dias previstos com onda de calor.
 
-* * * * *
-
-🗂️ Detalhes de Implementação
------------------------------
-
-### 1\. Preprocessamento
-
--   `preprocess_data.py` usa `pandas` para ler múltiplos arquivos CSV do INMET.
-
--   Concatena séries de 2022, 2023 e 2024.
-
--   Interpola por `timestamp` para preencher faltantes.
-
-### 2\. Treinamento dos Modelos
-
--   **Regressor**: RandomForestRegressor com validação `TimeSeriesSplit` para `temp_max` diária.
-
--   **Classificador**: RandomForestClassifier para flag `future_heat` em janela de *horizon* dias, usando lags de 1--3 dias.
-
-### 3\. Aplicação Web
-
--   Streamlit para UI simples.
-
--   `geopandas` e `folium` para leitura de shapefile e renderização de mapas.
-
--   Predição de temperatura e onda por período arbitrário.
+    -   Mapa interativo dos distritos, destacando em vermelho os distritos com onda de calor.
 
 * * * * *
-
-
-
-*Desenvolvido por Rafael e equipe de IoT Global Solution.*
