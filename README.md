@@ -8,27 +8,7 @@ Este repositório contém a implementação de um **protótipo de detecção e p
 Vídeo:
 https://www.youtube.com/watch?v=uOzpU0tkYqs
 
-📂 Estrutura do Projeto
------------------------
 
-```
-├── data
-│   ├── processed
-│   │   └── historico_interpolado.csv       # Série horária interpolada (2022--2024)
-│   └── raw
-│       └── SIRGAS_SHP_distrito.shp         # Shapefile dos distritos de SP
-├── models
-│   ├── daily_temp_regressor.pkl           # Modelo de regressão de temperatura diária
-│   └── heat_wave_classifier_7d.pkl        # Classificador de onda (7 dias)
-├── streamlit_app
-│   └── Home.py                            # Aplicação Streamlit
-├── scripts
-│   ├── train_models.py                    # Script de treinamento dos modelos
-├── .gitignore                             # Arquivos ignorados
-└── README.md                              # Este documento
-```
-
-* * * * *
 
 ⚙️ Pré-requisitos
 -----------------
