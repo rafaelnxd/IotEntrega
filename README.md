@@ -5,6 +5,9 @@ Este repositório contém a implementação de um **protótipo de detecção e p
 
 * * * * *
 
+Vídeo:
+https://www.youtube.com/watch?v=uOzpU0tkYqs
+
 📂 Estrutura do Projeto
 -----------------------
 
