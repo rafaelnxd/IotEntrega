@@ -1,0 +1,32 @@
+{
+  "id": "troca_sensor",
+  "version": "2025-06-03",
+  "title": "Troca de sensor",
+
+  "ask_strategy": "single",   
+
+  "steps": [
+    { "id": "sensor_antigo",  
+      "prompt": "Informe o sensor antigo.",   
+      "type": "text"                           
+    },
+    { "id": "sensor_novo",
+      "prompt": "Informe o sensor novo.",
+      "type": "text"
+    },
+    { "id": "controladora",
+      "prompt": "Qual controladora vai receber o sensor?",
+      "type": "text"
+    }
+  ],
+
+  "confirm_template": [                       
+    "Detalhes da troca:",
+    "• Antigo: {sensor_antigo}",
+    "• Novo: {sensor_novo}",
+    "• Controladora: {controladora}",
+    "Está tudo correto?"
+  ],
+
+  "handoff": "Aguarde, um agente assumirá em instantes 😊"   
+}

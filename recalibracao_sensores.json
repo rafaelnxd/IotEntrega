@@ -1,0 +1,40 @@
+{
+  "id": "recalibracao_sensores",
+  "version": "2025-06-04",
+  "title": "Recalibração de sensores",
+  "ask_strategy": "conditional",
+  "steps": [
+    {
+      "id": "acao_inicial",
+      "prompt": "Informe se os sensores novos chegaram na filial, se deseja solicitar sensores calibrados ou acompanhar o status da solicitação. (opções: “Sensores chegaram” / “Solicitar sensores” / “Acompanhar status”)",
+      "type": "select",
+      "options": ["Sensores chegaram", "Solicitar sensores", "Acompanhar status"]
+    },
+    {
+      "id": "aguardar_contato",
+      "prompt": "Aguarde o contato do time de operações para agendar o dia da troca.",
+      "type": "info",
+      "condition": "acao_inicial == 'Sensores chegaram'"
+    },
+    {
+      "id": "dados_requisicao",
+      "prompt": "Envie os dados abaixo em uma única mensagem:\n• Endereço completo (Rua; Número; Bairro; Cidade; Estado; CEP; Complemento)\n• CNPJ\n• Responsável pela solicitação (Nome completo; Telefone; E-mail)\n• Sensores que precisam de calibração (lista de modelos)",
+      "type": "textarea",
+      "condition": "acao_inicial == 'Solicitar sensores'"
+    },
+    {
+      "id": "numero_protocolo",
+      "prompt": "Informe o número de protocolo ou identificação da solicitação.",
+      "type": "text",
+      "condition": "acao_inicial == 'Acompanhar status'"
+    }
+  ],
+  "confirm_template": [
+    "Resumo da sua solicitação de recalibração:",
+    "• Ação selecionada: {acao_inicial}",
+    "• (Se aplicável) Dados enviados: {dados_requisicao}",
+    "• (Se aplicável) Número de protocolo: {numero_protocolo}",
+    "Está tudo correto?"
+  ],
+  "handoff": "Aguarde apenas mais alguns minutos, que um dos nossos analistas irá iniciar o seu atendimento 😊"
+}
